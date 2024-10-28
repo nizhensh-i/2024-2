@@ -10,8 +10,7 @@ def partition(a: list, l, r):
         if i >= j:
             break
         a[i], a[j] = a[j], a[i]
-    a[l] = a[j]
-    a[j] = x
+    a[l],a[j] = a[j],a[l]
     return j
 
 
@@ -22,6 +21,6 @@ def quick_sort(a, l, r):
         quick_sort(a, q + 1, r)
 
 
-a = [23, 9, 67, 2, 100, 9, 2]
+a = [23, 100, 67, 2, 100, 9, 2]
 quick_sort(a, 0, len(a) - 1)
 print(a)

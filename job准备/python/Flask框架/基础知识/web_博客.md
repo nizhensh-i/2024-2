@@ -896,3 +896,120 @@ docker 国内镜像源：
 
 
 
+
+
+
+
+# 表单无数据时按钮不可点击
+
+~~~
+data() {
+    return {
+      ruleForm: {
+        user: '',
+        pass: ''
+      },
+      isChange:false
+    }
+  },
+  watch:{
+    ruleForm:{
+      deep:true,
+      handler(){
+        this.isChange = true
+      }
+    }
+  }
+}
+
+<el-button  :disabled="!isChange" @click="submitForm">提交</el-button>
+~~~
+
+
+
+直接判断数据是否为空即可，不用侦听器了（`适合表单初始就有值的情况`）：
+
+~~~
+computed: {
+    formHasValue() {
+      return this.ruleForm.user != '' || this.ruleForm.pass != ''
+    }
+},  
+<el-button type="primary" :disabled="!formHasValue" @click="login">提交</el-button>
+~~~
+
+
+
+# 前端开发和生产环境需要切换后端ip
+
+解决：通过VITE提供的环境变量来自动切换后端ip，可以专注界面和业务代码于开发了，再也不用手动来回切换了。
+
+~~~
+# api/index.py
+const url_py =  (import.meta.env.DEV == true) ? 'http://192.168.1.13:8081':'http://117.72.109.0:4289'
+~~~
+
+同时对于请求的打印也可以只让他在开发环境中出现，生成环境则不打印。
+
+~~~~
+if (import.meta.env.DEV) {
+  console.log(error)
+  console.log('==>请求结束')
+}
+
+~~~~
+
+ 
+
+点击评论，会将整个posts列表作为url参数传入分享页面，所以分享页面的文章就可以直接展示。
+
+再从分享页面将posts.id传入到评论组件，  
+
+
+
+
+
+# 如何根据表单内容是否发生了变化，而让按钮变得可选中状态？
+
+解决：将网络请求的表单值赋给A，B变量。设置A变量保存初始的表单字符串值，B变量保存请求返回的对象，并绑定表单。监听判断A，B变量的对象字符串是否相等。
+
+踩坑：网络请求的表单值不能直赋值给A，B变量，否则A，B变量指向的是同一个引用，不管表单如何变化，A，B变量都相等。
+
+~~~
+
+data() {
+    return {
+      formLabelAlign: {},
+      originalForm: {},
+      isChange: false
+    }
+  },
+watch: {
+    formLabelAlign: {
+      deep: true,
+      handler(newVal) {
+        # 重点。originalForm不需要在使用JSON.stringify包裹，它已经是字符串了
+        this.isChange = JSON.stringify(newVal) !== this.originalForm
+      }
+    }
+  },
+ methods: {
+    getUserInfo(userId) {
+      userApi.getUser(userId).then((res) => {
+        if (res.data.msg == 'success') {
+          this.user = res.data.data
+          # 重点 。保存初始的字符串值，而不是直接赋值
+          this.originalForm = JSON.stringify(res.data.data)
+          this.formLabelAlign = res.data.data
+        }
+      })
+    },
+  }
+  
+  <ButtonClick
+  :disabled="!isChange"
+  />
+~~~
+
+
+

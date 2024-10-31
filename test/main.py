@@ -307,44 +307,46 @@ import threading
 #     threadPool.shutdown(wait=True)
 
 
-class Solution(object):
-    def addStrings(self, num1, num2):
-        """
-        :type num1: str
-        :type num2: str
-        :rtype: str
-        """
-        len_1 = len(num1)
-        len_2 = len(num2)
+# class Solution(object):
+#     def addStrings(self, num1, num2):
+#         """
+#         :type num1: str
+#         :type num2: str
+#         :rtype: str
+#         """
+#         len_1 = len(num1)
+#         len_2 = len(num2)
+#
+#         # 补0
+#         if len_1 < len_2:
+#             for _ in range(len_2-len_1):
+#                 num1 = '0'+ num1
+#         elif len_1 > len_2:
+#             for _ in range(len_1-len_2):
+#                 num2 = '0'+ num2
+#
+#
+#         num_length = len(num1)
+#         i ,j = num_length-1, num_length-1
+#         res = ''
+#         jump = 0
+#         for _ in range(num_length):
+#             if jump:
+#                 result = int(num1[i]) + int(num2[j]) + 1
+#             else:
+#                 result = int(num1[i]) + int(num2[j])
+#             if result >= 10:
+#                 jump = 1
+#                 # 只保留各位数
+#                 result = result - 10
+#             else:
+#                 jump = 0
+#             res = str(result) + res
+#             i -= 1
+#             j -= 1
+#         return res
 
-        # 补0
-        if len_1 < len_2:
-            for _ in range(len_2-len_1):
-                num1 = '0'+ num1
-        elif len_1 > len_2:
-            for _ in range(len_1-len_2):
-                num2 = '0'+ num2
-
-
-        num_length = len(num1)
-        i ,j = num_length-1, num_length-1
-        res = ''
-        jump = 0
-        for _ in range(num_length):
-            if jump:
-                result = int(num1[i]) + int(num2[j]) + 1
-            else:
-                result = int(num1[i]) + int(num2[j])
-            if result >= 10:
-                jump = 1
-                # 只保留各位数
-                result = result - 10
-            else:
-                jump = 0
-            res = str(result) + res
-            i -= 1
-            j -= 1
-        return res
+# print(Solution().addStrings('1','9'))
 
 
 # from concurrent.futures import ThreadPoolExecutor
@@ -367,4 +369,47 @@ class Solution(object):
 #     for result in results:
 #         print(result)
 
-print(Solution().addStrings('1','9'))
+
+# def merge(a:list,b:list):
+#   a = sorted(a)
+#   b = sorted(b)
+#   c = []
+#   i, j = 0, 0
+#   while i < len(a) and j < len(b):
+#     if a[i] < b[j]:
+#       c.append(a[i])
+#       i += 1
+#     else:
+#       c.append(b[j])
+#       j += 1
+#   while i < len(a):
+#     c.append(a[i])
+#     i += 1
+#   while j < len(b):
+#     c.append(b[j])
+#     j += 1
+#   return c
+#
+# a = [10,4,8,20]
+# b = [90,40,70]
+# print(merge(a,b))
+#
+# items = ['a', 'a', 'c','d','z','z', 'd','r','r', 'u']
+#
+# def word_count(items:list):
+#   result = {}
+#   for item in items:
+#       result[item] = result.get(item,0) + 1
+#   return result
+#
+# r = word_count(items)
+# print(r)
+# res = sorted(r, key=lambda x: r[x])
+# print(res)
+
+import re
+p = re.compile(r'[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}')
+s = 'ds fd2024-10-30dfdf fd f'
+# 注意，不能使用search()
+res = re.search(p,s)
+print(res)

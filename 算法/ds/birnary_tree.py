@@ -79,6 +79,7 @@ def floor(node):
 
 
 def find_sum(node, t):
+    # 判断树中是否存在根节点到叶子节点的路径，这条路径上节点的值相加等于目标和
     flag = False
 
     def pre(node, value, t):
@@ -91,7 +92,7 @@ def find_sum(node, t):
             if not node.left and not node.right:
                 if t == sum_a:
                     flag = True
-        pre(node.left,sum_a if sum_a else value, t)
+        pre(node.left, sum_a if sum_a else value, t)
         pre(node.right, sum_a if sum_a else value, t)
 
     pre(node, 0, t)

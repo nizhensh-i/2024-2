@@ -4,4 +4,6 @@
 *.word
 *.docx
 *.txt
-*.tar.gz
+jdk*
+node*
+*.eddx

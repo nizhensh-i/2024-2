@@ -30,9 +30,7 @@ class CycleDLink:
 
     def is_empty(self):
         # 空链表返回True，否则返回Flase
-        if self.head.next == self.head and self.head.pre == self.head:
-            return True
-        return False
+        return self.head.next == self.head and self.head.pre == self.head
 
     def length(self):
         count = 0

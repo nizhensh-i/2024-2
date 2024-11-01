@@ -32,9 +32,7 @@ class CycleLinkedList:
         return result
 
     def is_empty(self):
-        if self.head.next == self.head:
-            return True
-        return False
+        return self.head.next == self.head
 
     def length(self):
         count = 0

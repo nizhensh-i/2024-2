@@ -39,9 +39,7 @@ class LinkedList:
 
     def is_empty(self):
         # 空链表返回True，否则返回Flase
-        if self.head.next:
-            return False
-        return True
+        return not self.head.next
 
     def length(self):
         count = 0

@@ -33,8 +33,8 @@ def local_spider():
     f = FumeSpider()
     r = f.fetch_many(config['development'].shop_name, _my_request_local)
     time_sum = time.perf_counter()-t0
-    logging.info('数据总数为：', len(r))
-    logging.info('总用时：', time_sum)
+    logging.info('数据总数为: %s', len(r))
+    logging.info('总用时: %s', time_sum)
 
 def order_spider():
     Logger('order_log.log')
@@ -43,8 +43,8 @@ def order_spider():
     f = FumeSpider()
     r = f.fetch_many(config['development'].shop_name, _my_request_remote)
     time_sum = time.perf_counter() - t0
-    logging.info('数据总数为：', len(r))
-    logging.info('总用时：', time_sum)
+    logging.info('数据总数为: %s', len(r))
+    logging.info('总用时: %s', time_sum)
 
 
 def thread_spider():
@@ -54,8 +54,8 @@ def thread_spider():
     f = thread_fume_spider()
     r = f.fetch_many_thread(config['development'].shop_name, _my_request_remote)
     time_sum = time.perf_counter() - t0
-    logging.info('数据总数为：', len(r))
-    logging.info('总用时：', time_sum)
+    logging.info('数据总数为: %s', len(r))
+    logging.info('总用时: %s', time_sum)
 
 
 def async_spider():
@@ -63,13 +63,13 @@ def async_spider():
     t0 = time.perf_counter()
     r = download_many(config['development'].shop_name)
     time_sum = time.perf_counter() - t0
-    logging.info('数据总数为：', len(r))
-    logging.info('总用时：', time_sum)
+    logging.info('数据总数为: %s', len(r))
+    logging.info('总用时: %s', time_sum)
 
 
 if __name__ == '__main__':
 
-    # local_spider()
+    local_spider()
 
     # 1320条数据
     # order_spider()
@@ -78,4 +78,4 @@ if __name__ == '__main__':
     # thread_spider()
 
     # 1020条 0条 1020条 1020条 1020条
-    async_spider()
+    # async_spider()

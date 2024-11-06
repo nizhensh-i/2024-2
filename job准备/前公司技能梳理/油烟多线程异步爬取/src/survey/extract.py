@@ -42,7 +42,7 @@ class Extract:
                 Fume(MV_Stat_Code=data[2], MV_Create_Time=data[-1], MV_Data_Time=data[-2], MV_Fan_Electricity=data[6],
                      MV_Purifier_Electricity=data[7], MV_Fume_Concentration=data[4], MV_Fume_Concentration2=data[5]))
 
-        logging.info('完成解析 HTML 内容')
+        logging.info('完成解析 HTML 内容\n')
         return result
 
     @staticmethod

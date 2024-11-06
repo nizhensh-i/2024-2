@@ -43,12 +43,13 @@ async def get_fume(client: AsyncClient, url: str) -> bytes:
 
 def download_many(shops: list[str]) -> int:
     shop_url = GenerateUrl.generate_url(shops)
-    print(f'url:{shop_url}')
+    print(f'url:')
+    for url in shop_url:
+        print(url)
     all_url = []
     for shop, urls in shop_url.items():
         all_url = all_url + urls
-    print(all_url)
-    print(f'url长度为:{len(all_url)}')
+    print(f'url个数为:{len(all_url)}')
     return asyncio.run(supervisor(all_url))
 
 

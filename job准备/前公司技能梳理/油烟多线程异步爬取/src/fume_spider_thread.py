@@ -49,8 +49,7 @@ class FumeSpider:
         all_url = []
         for shop, urls in shop_url.items():
             all_url = all_url + urls
-        print(all_url)
-        print(f'url长度为:{len(all_url)}')
+        print(f'url个数为:{len(all_url)}')
 
         # ThreadPoolExecutor.map 的实践
         # with futures.ThreadPoolExecutor() as executor:
@@ -84,8 +83,7 @@ class FumeSpider:
         all_url = []
         for shop, urls in shop_url.items():
             all_url = all_url + urls
-        print(all_url)
-        print(f'url长度为:{len(all_url)}')
+        print(f'url个数为:{len(all_url)}')
 
         # 爬取的html
         fume_data = []

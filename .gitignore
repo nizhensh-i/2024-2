@@ -7,3 +7,5 @@
 jdk*
 node*
 *.eddx
+*.iml
+*.log

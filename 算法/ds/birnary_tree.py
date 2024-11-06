@@ -6,8 +6,8 @@ class Node:
 
 
 class BinaryTree:
-    def __init__(self):
-        self.root = None
+    def __init__(self, value=None):
+        self.root = Node(value) if value else None
 
     def add(self, value):
         # 根节点为空

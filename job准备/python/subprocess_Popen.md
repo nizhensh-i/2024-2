@@ -23,3 +23,51 @@ subprocess
 总结：建议用列表形式传参：
 
 ​		`subprocess.Popen(['/bin/sh', '-c', args[0], args[1], ...])`
+
+
+
+
+
+
+
+~~~
+import tempfile
+import subprocess
+
+
+def execute_command(command, no_exception=False, max_retry_count=1, name="funcName", timeout=1200, **kwargs):
+    print(f"[{name}]:Execute command:{command}")
+    log, status = "", None
+    for i in range(max_retry_count):
+        fileno = tempfile.NamedTemporaryFile(mode='wt+', delete=True)
+        print("create temporary file")
+        try:
+            p = subprocess.Popen(args=[r"D:\rujian\Git\bin\bash.exe", "-c", command], shell=True, stdout=fileno,
+                                 stderr=fileno, **kwargs)
+            p.communicate(timeout=timeout)
+            print("communicate subprocess finish")
+            fileno.seek(0)
+            log = fileno.read()
+            status = p.returncode
+            print(f"status:{status}, log:{log}")
+            if status == 0:
+                print(f"[{name}]:Execute command success! Command: {command}")
+                break
+            if not no_exception:
+                raise Exception("命令执行失败")
+            else:
+                print(f"[{name}]:Execute command failed! Command fail!command:{command}")
+                if (i + 1) == max_retry_count:
+                    break
+        except Exception as е:
+            print('异常')
+        finally:
+            fileno.close()
+    return status, log
+
+
+if __name__ == '__main__':
+    status, log = execute_command("cat a.txt", True)
+
+~~~
+

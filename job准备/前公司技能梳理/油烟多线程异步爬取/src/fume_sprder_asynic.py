@@ -21,7 +21,7 @@ async def download_one(client: AsyncClient, cc: str, queue, semaphore):
 async def get_fume(client: AsyncClient, url: str) -> bytes:
     try:
         # 发起异步HTTP请求
-        resp = await client.get(url, follow_redirects=True)
+        resp = await client.get(url, follow_redirects=True)resp = await client.get(url, follow_redirects=True)
         # 确保响应状态码是200
         if resp.status_code == 200:
             return resp.text  # 返回响应的文本内容

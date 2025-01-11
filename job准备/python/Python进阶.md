@@ -188,3 +188,40 @@ async with semaphore:
 await asyncio.to_thread(save_flag, image, f'{cc}.gif')
 ~~~
 
+
+
+把问题复杂化 属于过早优化
+
+# 缓存
+
+functools提供了3个用于缓存的装饰器： @cache   @lru_cache  @cached_property
+
+## @cached_property
+
+作用：把方法的结果缓存在同名实例属性中
+
+
+
+@cached_property 创建一个**非覆盖性描述符**
+
+
+
+局限：
+
+
+
+
+
+# 描述符
+
+~~~
+实现了__get__(),__set__(),__deleter__()方法的类
+还有__set_name__()方法
+~~~
+
+
+
+
+
+..
+

@@ -1013,3 +1013,183 @@ watch: {
 
 
 
+
+
+# 首页出现意料之外的滚动条
+
+背景：开发页面和打包预览页面的滚动条不一致
+
+![73332961138](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1733329611381.png)
+
+
+
+正确：
+
+![73332965561](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1733329655611.png)
+
+
+
+解决： 样式需要加上scoped
+
+![73332970031](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1733329700313.png)
+
+
+
+# 评论支持存储回复
+
+1.修改评论表模型结构。父评论 和 子评论都在一张表中
+
+![73488465003](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1734884650036.png)
+
+2. 修改后端提交评论的逻辑
+
+3. 前端增加2个页面
+
+ ![73488482325](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1734884823252.png)
+
+   ![73488476781](C:\Users\19125\Desktop\2024-2月面试\job准备\python\Flask框架\基础知识\web_博客.assets\1734884767813.png)
+
+
+
+# 评论实现瀑布流
+
+1.子组件监听祖先组件的滚动条是否到达屏幕底部。是，则父组件触发事件，子组件收到该事件后执行请求后续评论
+
+~~~~
+  mounted() {
+    emitter.on('scroll', () => {
+      if (!this.loading && !this.allLoaded) {
+        this.getComment()
+      }
+    })
+  },
+~~~~
+
+
+
+2.使用mitt库
+
+~~~~
+//  @/utils/emitter.js
+import mitt from 'mitt'
+
+const emitter = mitt()
+export default emitter
+~~~~
+
+3.<el-main>监听滚动条
+
+~~~~
+  handleScroll({ scrollLeft, scrollTop }) {
+      // 使用$refs获取el-scrollbar组件的根元素
+      const scrollbar = this.$refs.scrollbar;
+      
+      // 获取滚动容器的引用，el-scrollbar组件内部的滚动容器通常有一个类名为.el-scrollbar__wrap
+      const scrollbarWrap = scrollbar.$el.querySelector('.el-scrollbar__wrap');
+
+      // 滚动容器的总高度
+      const containerHeight = scrollbarWrap.scrollHeight;
+      // 滚动容器的可视高度
+      const visibleHeight = scrollbarWrap.clientHeight;
+
+      // 检查是否滚动到底部
+      if (scrollTop + visibleHeight >= containerHeight - 10) {
+        // 执行到底部的相关操作
+        emitter.emit('scroll')
+      }
+    },
+    
+    
+    
+  <el-main>
+      <el-scrollbar ref="scrollbar" @scroll="handleScroll">
+        <router-view />
+      </el-scrollbar>
+  </el-main>
+~~~~
+
+
+
+
+
+# 本地修改了数据模型，服务器上的数据库需要重建吗？
+
+不需要。 本地该了，会生成迁移脚本，打镜像时会将迁移脚本拷贝至容器，启动boot.sh时会自动upgrade将更改应用到数据库
+
+
+
+
+
+# 后端对指定url开放白名单，其他的url则需要验证jwt
+
+正确写法：
+
+~~~
+@api.before_request
+def auth():
+    # 对/api/v1/posts开头的请求放行
+    if re.match(skip_post_pattern, request.path):
+        return
+    else:
+        jwt_required()
+~~~
+
+错误写法：
+
+~~~
+@api.before_request
+@jwt_required()
+def auth():
+    # 对/api/v1/posts开头的请求放行
+    if re.match(skip_post_pattern, request.path):
+        return
+   return '401'
+~~~
+
+错的的写法对白名单有效，但对其他携带了jwt的url会返回` 401 未授权`   ，因为判断不在白名单中后，就直接返回将401返回给前端了。
+
+
+
+
+
+# 解决：前端刷新页面后，页面空白，数据丢失
+
+背景：mounted执行的函数中的参数 需要从路由钩子中获取。
+
+解决：把mounted中的该函数` 放到路由钩子`中即可
+
+错误的编码逻辑：
+
+~~~
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.action = to.params.action
+      vm.userName = to.params.userName
+      vm.$nextTick(() => {})
+    })
+  },
+  mounted() {
+    this.getFollowList()
+  },
+~~~
+
+这样会导致刷新页面后，mounted再去执行getFollowList()函数，拿到的userName为undefined。正确的解放方案是，把getFollowList()放到beforeRouteEnter里
+
+正确的逻辑：
+
+~~~~
+
+ beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.action = to.params.action
+      vm.userName = to.params.userName
+      vm.getFollowList()
+      vm.$nextTick(() => {})
+    })
+  },
+~~~~
+
+这样无论页面怎么刷新，getFollowList()函数在获取到userName后执行，总能拿到userName的值
+
+
+

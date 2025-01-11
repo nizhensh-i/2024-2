@@ -651,6 +651,31 @@ python线程收GIL的限制，任何时候都只允许运行一个线程
     logger = logging.getLogger(__name__)  #模块级记录器
     ~~~
 
-    ​
 
-    ​
+
+
+26.类的内置属性
+
+~~~
+cls.__class__
+
+cls.__name__
+
+cls.__mro__
+
+cls.__bases__
+
+cls.__qualname__
+
+cls.__subclasses__()
+
+cls.mro()
+~~~
+
+
+
+
+
+
+
+s
